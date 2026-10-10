@@ -29,7 +29,7 @@ The backend also contains soft-delete server actions (`Employee_Remove`,
 ├── src/
 │   └── client.ts                 # Reusable OutSystems REST client
 ├── tests/
-│   ├── setup.ts                  # Loads .env before each test suite
+│   ├── setup.ts                  # Loads .env (via dotenv) once per test file
 │   ├── create-employee.test.ts   # UC#1 — POST /employees (4 scenarios)
 │   ├── list-employees.test.ts    # UC#2 — GET /employees (4 scenarios)
 │   ├── get-employee.test.ts      # UC#3 — GET /employees/{Id} (2 scenarios)
