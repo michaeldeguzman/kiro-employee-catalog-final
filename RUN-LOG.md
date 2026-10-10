@@ -205,3 +205,43 @@ Offline:
 ```
 
 - `2026-10-10 06:26 UTC` — Step 8: `git status` clean, no changes. No files modified, no app/MCP/Mentor calls during the verification.
+
+---
+
+## 2026-10-10 — Read-only verification re-run (clean, all green)
+
+- `2026-10-10 06:34 UTC` — Re-ran the read-only verification. Step 1: `OUTSYSTEMS_BASE_URL` is a real host (not empty/placeholder) — not printed. Proceeded.
+- `2026-10-10T06:34:18Z` — **Typecheck** (`npm run typecheck`): passed, exit 0.
+- `2026-10-10T06:34:27Z → 06:34:31Z` — **Live run** (`npm test`): passed, exit 0. 10 passed, 2 skipped.
+- `2026-10-10T06:34:38Z` — **Offline run** (`OUTSYSTEMS_BASE_URL="" npm test`): passed, exit 0. 10 passed, 2 skipped.
+
+### Per-file (live P/F/S · offline P/F/S)
+| File | Live P | Live F | Live S | Off P | Off F | Off S |
+|---|---|---|---|---|---|---|
+| create-employee.test.ts | 4 | 0 | 0 | 4 | 0 | 0 |
+| list-employees.test.ts | 4 | 0 | 0 | 4 | 0 | 0 |
+| get-employee.test.ts | 2 | 0 | 0 | 2 | 0 | 0 |
+| employees.test.ts | 0 | 0 | 1 | 0 | 0 | 1 |
+| client.test.ts | 0 | 0 | 1 | 0 | 0 | 1 |
+
+**Totals:** Live = 10 passed / 0 failed / 2 skipped (12), exit 0. Offline = 10 passed / 0 failed / 2 skipped (12), exit 0.
+**Live-only tests:** all 10 non-placeholder tests (create-employee, list-employees, get-employee). Always-skipped placeholders: employees.test.ts, client.test.ts.
+**Failures (step 7):** None — both runs green. The POST-create timeouts from the prior run (06:25Z) did NOT recur, confirming they were transient tenant latency, not a code defect.
+
+### Verbatim Vitest summaries (no hostname/tenant/key in output; nothing to redact)
+Live:
+```
+ Test Files  3 passed | 2 skipped (5)
+      Tests  10 passed | 2 skipped (12)
+   Start at  17:34:27
+   Duration  4.42s (tests 98%, transform 1%)
+```
+Offline:
+```
+ Test Files  3 passed | 2 skipped (5)
+      Tests  10 passed | 2 skipped (12)
+   Start at  17:34:38
+   Duration  143ms (transform 54%, tests 17%, setup 14%, import 8%, worker 7%)
+```
+
+- `2026-10-10 06:34 UTC` — Step 8: `git status` clean, no changes. No files modified, no commit/push during the verification itself, no app/MCP/Mentor calls.
